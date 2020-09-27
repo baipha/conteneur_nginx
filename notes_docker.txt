@@ -26,3 +26,11 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 
 
 http://localhost
+
+$ docker container stop 69f84f1dd8e3
+69f84f1dd8e3
+
+
+$ docker ps -l
+CONTAINER ID      IMAGE         COMMAND                  CREATED            STATUS                     PORTS               NAMES
+69f84f1dd8e3      mynginx       "nginx -g 'daemon of…"   48 minutes ago     Exited (0) 2 seconds ago                       c_mynginx
