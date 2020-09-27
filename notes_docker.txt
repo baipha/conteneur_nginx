@@ -18,7 +18,7 @@ $ docker images mynginx
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 mynginx             latest              91e3129031dd        12 minutes ago      154MB
 
-$ docker run --name c_mynginx -p 80:80 -d myngin
+$ docker run --name c_mynginx -p 80:80 -d mynginx
 
 $ docker ps -l
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
@@ -34,3 +34,78 @@ $ docker container stop 69f84f1dd8e3
 $ docker ps -l
 CONTAINER ID      IMAGE         COMMAND                  CREATED            STATUS                     PORTS               NAMES
 69f84f1dd8e3      mynginx       "nginx -g 'daemon of…"   48 minutes ago     Exited (0) 2 seconds ago                       c_mynginx
+
+
+
+$ docker run -d -p 5000:5000 --name registry registry:2
+Unable to find image 'registry:2' locally
+2: Pulling from library/registry
+cbdbe7a5bc2a: Pull complete 
+47112e65547d: Pull complete 
+46bcb632e506: Pull complete 
+c1cc712bcecd: Pull complete 
+3db6272dcbfa: Pull complete 
+Digest: sha256:8be26f81ffea54106bae012c6f349df70f4d5e7e2ec01b143c46e2c03b9e551d
+Status: Downloaded newer image for registry:2
+aca8a8f3ef18725d551c01760e57cfcfd3438afac1df06e454887acca1717a37
+
+$ docker ps -l
+CONTAINER ID        IMAGE      COMMAND                  CREATED           STATUS              PORTS                    NAMES
+aca8a8f3ef18        registry:2          "/entrypoint.sh /etc…"   16 seconds ago      Up 14 seconds    0.0.0.0:5000->5000/tcp   registry
+
+
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+mynginx             latest              91e3129031dd        About an hour ago   154MB
+<none>              <none>              97927c1b2173        About an hour ago   154MB
+registry            2                   2d4f4b5309b1        3 months ago        26.2MB
+my-nginx            v0.1                23a7deebf047        12 months ago       152MB
+nginx               latest              ab56bba91343        12 months ago       126MB
+elasticsearch       7.3.1               3d3aa92f641f        13 months ago       807MB
+ubuntu              latest              a2a15febcdf3        13 months ago       64.2MB
+
+
+
+$ docker rmi 23a7deebf047
+Untagged: my-nginx:v0.1
+Deleted: sha256:23a7deebf047942b908409078b60266157b8789654acfe75248213816e8259b5
+Deleted: sha256:21c42ffb455aa560e64b66917e84c30c18dcdef4a5234e93f5dcd69f85dce032
+Deleted: sha256:a104bf4ad218d3be77cce43337590ffe18e97b255228588c5382940b359913a1
+Deleted: sha256:1bf302126321bfcbd0631cb9e005e0fb4e86c38d077b9ddc9695b0539f6d5ef0
+Deleted: sha256:b0815c8c2854d3ce1cc3434f2b15380f9a6df7879a9ac53b297a1643a02b69ab
+Deleted: sha256:2b5a9e67c649e00546f74d9cb3dfe6ebbc91a54e0278e204608abd95874affc2
+
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+mynginx             latest              91e3129031dd        About an hour ago   154MB
+<none>              <none>              97927c1b2173        About an hour ago   154MB
+registry            2                   2d4f4b5309b1        3 months ago        26.2MB
+nginx               latest              ab56bba91343        12 months ago       126MB
+elasticsearch       7.3.1               3d3aa92f641f        13 months ago       807MB
+ubuntu              latest              a2a15febcdf3        13 months ago       64.2MB
+
+
+$ docker image tag mynginx:latest localhost:5000/myfirstimage
+
+$ docker images
+REPOSITORY                    TAG                 IMAGE ID            CREATED             SIZE
+mynginx                       latest              91e3129031dd        About an hour ago   154MB
+localhost:5000/myfirstimage   latest              91e3129031dd        About an hour ago   154MB
+<none>                        <none>              97927c1b2173        About an hour ago   154MB
+registry                      2                   2d4f4b5309b1        3 months ago        26.2MB
+nginx                         latest              ab56bba91343        12 months ago       126MB
+elasticsearch                 7.3.1               3d3aa92f641f        13 months ago       807MB
+ubuntu                        latest              a2a15febcdf3        13 months ago       64.2MB
+
+
+$ docker push localhost:5000/myfirstimage
+The push refers to repository [localhost:5000/myfirstimage]
+9edb9d5b339f: Pushed 
+a2e6b132073e: Pushed 
+122be11ab4a2: Pushed 
+7beb13bce073: Pushed 
+f7eae43028b3: Pushed 
+6cebf3abed5f: Pushed 
+latest: digest: sha256:b5aa258181e7b27adeafa2a2d78edb96205f9c7f99f34efe9ef4f677695df274 size: 1571
